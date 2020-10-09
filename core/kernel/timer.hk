@@ -1,0 +1,13 @@
+timer_ticks = 0;
+def timer_handler() {
+$timer_ticks++;
+if timer_ticks%18 == 0 {}    
+}
+}
+def timer_wait($ticks) {
+eticks = $timer_ticks + $ticks;
+while($timer_ticks<$eticks);
+}
+def timer_install() {
+xCore::irqhandler(0,timer_handler());
+}

@@ -1,0 +1,9 @@
+def idt_set_gate($num,$base,$sel,$flags) {
+xCore::idtgate($num,$base,$sel,$flags);
+}
+def idt_load() {
+xCore::idtload();
+}
+def idt_install() {
+idt_load();
+}

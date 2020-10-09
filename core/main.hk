@@ -1,0 +1,17 @@
+import system;
+import kernel/gdt;
+import kernel/idt;
+import kernel/irq;
+import kernel/isrs;
+import kernel/scrn;
+import kernel/timer;
+def main() {
+gdt_install();
+idt_install();
+isrs_install();
+irq_install();
+init_video();
+timer_install();
+text = "xCore 0.0.1";
+print text;    
+}

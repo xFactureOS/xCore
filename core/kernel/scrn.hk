@@ -1,0 +1,83 @@
+textmemptr = "";
+attrib = 0x0F;
+csr_x = 0;
+csr_y = 0;
+def scroll() {
+blank = 0x20 | (attrib << 8);
+if csr_y >= 25 {
+temp = csr_y - 25 + 1;
+xCore::memcpy($textmemptr,$textmemptr+$temp*80,(25-$temp)*80*2);
+xCore::memsetw($textmemptr+(25-$temp)*80,$blank,80);
+csr_y = 25 - 1;
+}
+}
+def move_csr() {
+temp = $csr_y * 80 + $csr_x;
+xCore::outportb(0x3D4,14);
+xCore::outportb(0x3D5,$temp>>8);
+xCore::outportb(0x3D4,15);
+xCore::outportb(0x3D5,$temp);
+}
+def cls() {
+i = "";
+blank = 0x20 | ($attrib << 8);
+for 0 < 25 -> i {
+xCore::memsetw($textmemptr+$i*80,$blank,80);
+}
+csr_x = 0;
+csr_y = 0;
+move_csr();    
+}
+def putch($c) {
+where = "";    
+att = $attrib << 8;
+if c == 0x08 {
+if $csr_x != 0 {
+$csr_x--;
+}
+}
+if c == 0x09 {
+csr_x = ($csr_x + 8) & ~(8 - 1);
+}
+if c == "\r" {
+csr_x = 0;
+}
+if c == "\n" {
+csr_x = 0;
+$csr_y++;
+}
+if c >= "" {
+where = $textmemptr + ($csr_y * 80 + $csr_x);
+where = $c | $att;
+$csr_x++;
+}
+if csr_x >= 80 {
+csr_x = 0;
+$csr_y++;
+}
+scroll();
+move_csr();
+}
+def puts($text) {
+for 0 < strlen(text) -> i {
+putch($text[$i]);
+}
+putch('\n');
+output i;
+}
+def settextcolor($forecolor,$backcolor) {
+attrib = ($backcolor << 4) | ($forecolor & 0x0F); 
+}
+def init_video() {
+xCore::outportb(0x03c8,0x03);
+xCore::outportb(0x03c9,0x72>>2);
+xCore::outportb(0x03c9,0x9f>>2);
+xCore::outportb(0x03c9,0xcf>>2);
+xCore::outportb(0x03c8,0x01);
+xCore::outportb(0x03c9,0x34>>2);
+xCore::outportb(0x03c9,0x65>>2);
+xCore::outportb(0x03c9,0xA4>>2);
+settextcolor(0x03,0x01);
+textmemptr = 0xB8000;
+cls();
+}
