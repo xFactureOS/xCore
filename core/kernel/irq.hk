@@ -39,7 +39,7 @@ xCore::idtgate(47,irq15,0x08,0x8E);
 }
 def irq_handler() {
 if xCore::slave >= 40 {
-outportb(0xA0,0x20);
+xCore::outportb(0xA0,0x20);
 }
 xCore::outportb(0x20,0x20);
 }
