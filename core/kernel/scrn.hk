@@ -6,23 +6,26 @@ def scroll() {
 blank = 0x20 | (attrib << 8);
 if csr_y >= 25 {
 temp = csr_y - 25 + 1;
-xCore::memcpy($textmemptr,$textmemptr+$temp*80,(25-$temp)*80*2);
-xCore::memsetw($textmemptr+(25-$temp)*80,$blank,80);
+xcore = new xCore(); 
+$xcore->memcpy($textmemptr,$textmemptr+$temp*80,(25-$temp)*80*2);
+$xcore->memsetw($textmemptr+(25-$temp)*80,$blank,80);
 csr_y = 25 - 1;
 }
 }
 def move_csr() {
+xcore = new xCore();     
 temp = $csr_y * 80 + $csr_x;
-xCore::outportb(0x3D4,14);
-xCore::outportb(0x3D5,$temp>>8);
-xCore::outportb(0x3D4,15);
-xCore::outportb(0x3D5,$temp);
+$xcore->outportb(0x3D4,14);
+$xcore->outportb(0x3D5,$temp>>8);
+$xcore->outportb(0x3D4,15);
+$xcore->outportb(0x3D5,$temp);
 }
 def cls() {
+xcore = new xCore();     
 i = "";
 blank = 0x20 | ($attrib << 8);
-for 0 < 25 -> i {
-xCore::memsetw($textmemptr+$i*80,$blank,80);
+for 0 < 25 -> i {    
+$xcore->memsetw($textmemptr+$i*80,$blank,80);
 }
 csr_x = 0;
 csr_y = 0;
@@ -69,14 +72,15 @@ def settextcolor($forecolor,$backcolor) {
 attrib = ($backcolor << 4) | ($forecolor & 0x0F); 
 }
 def init_video() {
-xCore::outportb(0x03c8,0x03);
-xCore::outportb(0x03c9,0x72>>2);
-xCore::outportb(0x03c9,0x9f>>2);
-xCore::outportb(0x03c9,0xcf>>2);
-xCore::outportb(0x03c8,0x01);
-xCore::outportb(0x03c9,0x34>>2);
-xCore::outportb(0x03c9,0x65>>2);
-xCore::outportb(0x03c9,0xA4>>2);
+xcore = new xCore();     
+$xcore->outportb(0x03c8,0x03);
+$xcore->outportb(0x03c9,0x72>>2);
+$xcore->outportb(0x03c9,0x9f>>2);
+$xcore->outportb(0x03c9,0xcf>>2);
+$xcore->outportb(0x03c8,0x01);
+$xcore->outportb(0x03c9,0x34>>2);
+$xcore->outportb(0x03c9,0x65>>2);
+$xcore->outportb(0x03c9,0xA4>>2);
 settextcolor(0x03,0x01);
 textmemptr = 0xB8000;
 cls();

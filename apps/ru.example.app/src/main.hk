@@ -1,0 +1,5 @@
+pclass Activity {
+def main() {
+setContentView("apps/ru.example.app/res/layout/main.hell");
+}
+}

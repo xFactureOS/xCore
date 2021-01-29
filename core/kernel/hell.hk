@@ -1,0 +1,4 @@
+def setContentView($ui) {
+xcore = new xCore();
+$xcore->hell("$ui");
+}

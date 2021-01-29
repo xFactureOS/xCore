@@ -1,0 +1,4 @@
+def init_procces($boot) {
+xcore = new xCore();
+$xcore->procces($boot);   
+}

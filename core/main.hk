@@ -5,6 +5,8 @@ import kernel/irq;
 import kernel/isrs;
 import kernel/scrn;
 import kernel/timer;
+import kernel/procces;
+import kernel/hell;
 def main() {
 gdt_install();
 idt_install();
@@ -12,6 +14,5 @@ isrs_install();
 irq_install();
 init_video();
 timer_install();
-text = "xCore 0.0.1";
-puts($text);    
+init_procces("ru.example.app");    
 }

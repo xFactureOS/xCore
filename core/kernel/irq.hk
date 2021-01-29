@@ -1,46 +1,51 @@
 def irq_install_handler() {
 inst = 1;
-xCore::irq_routines(inst);
+xcore = new xCore();
+$xcore->irq_routines(inst);
 }
 def irq_uninstall_handler() {
 inst = 0;
-xCore::irq_routines(inst);    
+xcore = new xCore();
+$xcore->irq_routines(inst);    
 }
 def irq_remap() {
-xCore::outportb(0x20,0x11);
-xCore::outportb(0xA0,0x11);
-xCore::outportb(0x21,0x20);
-xCore::outportb(0xA1,0x28);
-xCore::outportb(0x21,0x04);
-xCore::outportb(0xA1,0x02);
-xCore::outportb(0x21,0x01);
-xCore::outportb(0xA1,0x01);
-xCore::outportb(0x21,0x0);
-xCore::outportb(0xA1,0x0);
+xcore = new xCore();    
+$xcore->outportb(0x20,0x11);
+$xcore->outportb(0xA0,0x11);
+$xcore->outportb(0x21,0x20);
+$xcore->outportb(0xA1,0x28);
+$xcore->outportb(0x21,0x04);
+$xcore->outportb(0xA1,0x02);
+$xcore->outportb(0x21,0x01);
+$xcore->outportb(0xA1,0x01);
+$xcore->outportb(0x21,0x0);
+$xcore->outportb(0xA1,0x0);
 }
 def irq_install() {
 irq_remap();
-xCore::idtgate(32,irq0,0x08,0x8E);
-xCore::idtgate(33,irq1,0x08,0x8E);
-xCore::idtgate(34,irq2,0x08,0x8E);
-xCore::idtgate(35,irq3,0x08,0x8E);
-xCore::idtgate(36,irq4,0x08,0x8E);
-xCore::idtgate(37,irq5,0x08,0x8E);
-xCore::idtgate(38,irq6,0x08,0x8E);
-xCore::idtgate(39,irq7,0x08,0x8E);
-xCore::idtgate(40,irq8,0x08,0x8E);
-xCore::idtgate(41,irq9,0x08,0x8E);
-xCore::idtgate(42,irq10,0x08,0x8E);
-xCore::idtgate(43,irq11,0x08,0x8E);
-xCore::idtgate(44,irq12,0x08,0x8E);
-xCore::idtgate(45,irq13,0x08,0x8E);
-xCore::idtgate(46,irq14,0x08,0x8E);
-xCore::idtgate(47,irq15,0x08,0x8E);    
+xcore = new xCore(); 
+$xcore->idtgate(32,"irq0",0x08,0x8E);
+$xcore->idtgate(33,"irq1",0x08,0x8E);
+$xcore->idtgate(34,"irq2",0x08,0x8E);
+$xcore->idtgate(35,"irq3",0x08,0x8E);
+$xcore->idtgate(36,"irq4",0x08,0x8E);
+$xcore->idtgate(37,"irq5",0x08,0x8E);
+$xcore->idtgate(38,"irq6",0x08,0x8E);
+$xcore->idtgate(39,"irq7",0x08,0x8E);
+$xcore->idtgate(40,"irq8",0x08,0x8E);
+$xcore->idtgate(41,"irq9",0x08,0x8E);
+$xcore->idtgate(42,"irq10",0x08,0x8E);
+$xcore->idtgate(43,"irq11",0x08,0x8E);
+$xcore->idtgate(44,"irq12",0x08,0x8E);
+$xcore->idtgate(45,"irq13",0x08,0x8E);
+$xcore->idtgate(46,"irq14",0x08,0x8E);
+$xcore->idtgate(47,"irq15",0x08,0x8E);    
 }
 def irq_handler() {
-slave = xCore::slave();
+xcore = new xCore();     
+slave = $xcore->slave();
 if slave >= 40 {
-xCore::outportb(0xA0,0x20);
+$xcore->outportb(0xA0,0x20);
 }
-xCore::outportb(0x20,0x20);
+$xcore->outportb(0x20,0x20);
 }
